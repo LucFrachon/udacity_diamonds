@@ -1,0 +1,46 @@
+---
+title: "Diamonds - An Exploratory Analysis"
+author: "Luc Frachon"
+date: "13 janvier 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This mini-project is another problem set from the Data Analysis in R course,part of the Udacity Data Analyst Nanodegree. It uses the diamonds dataset that ships with the ggplot2 package.
+
+## Load data
+
+```{r}
+require(ggplot2)
+data("diamonds")
+str(diamonds)
+summary(diamonds)
+```
+
+This dataset contains 53,940 observations, ie. data about 53,940 different diamonds including prices. We see that the data seems very clean as there as are no NAs. There are 0s in the x, y, z dimensions, however, which most likely correspond to missing values.
+
+## Task 1: Scatterplot of price vs x
+
+From the dataset's help file, we learn that x is the length in millimetres.
+
+```{r}
+ggplot(data = diamonds, aes(x, price)) +
+    theme_light() +
+    geom_point(alpha = .05, colour = 'steelblue')
+```
+
+The observations where x = 0 compress the horizontal scale. We can zoom in a little:
+
+```{r}
+ggplot(data = diamonds, aes(x, price)) +
+    theme_light() +
+    geom_point(alpha = .05, colour = 'steelblue') +
+    scale_x_continuous(limits = c(3, 11), breaks = seq(3, 11, 2))
+```
+
+
