@@ -77,3 +77,43 @@ with(diamonds, cor(x, log10(price), method = 'pearson'))
 
 As predicted, we have an almost perfect linear correlation.
 
+## Question 3: Price vs. Depth
+
+```{r}
+ggplot(data = diamonds, aes(depth, price)) +
+    theme_light() +
+    geom_point(alpha = .05, colour = 'steelblue')
+```
+
+Again, we have a number of outliers but the majority of the observations is between 55 and 70 millmetres. Let us focus on that range:
+
+```{r}
+ggplot(data = diamonds, aes(depth, price)) +
+    theme_light() +
+    geom_point(alpha = .05, colour = 'steelblue') +
+    coord_cartesian(xlim = c(55, 70))
+```
+
+With some adjustments to transparency and tick marks along the x-axis:
+
+```{r}
+ggplot(data = diamonds, aes(depth, price)) +
+    theme_light() +
+    geom_point(alpha = .01, colour = 'steelblue') +
+    scale_x_continuous(breaks = seq(42, 80, 2)) +
+    coord_cartesian(xlim = c(55, 70))
+```
+
+**Based on this scatterplot, most diamonds are between what values of depth?**
+
+Most are between 59 and 64mm.
+
+**Correlation of depth vs. price:**
+
+```{r}
+with(diamonds, cor(depth, price))
+```
+
+The correlation coefficient is very small and from the scatter plots, there is no reason to suspect some hidden, non-linear correlation.
+
+
