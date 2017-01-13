@@ -24,7 +24,7 @@ summary(diamonds)
 
 This dataset contains 53,940 observations, ie. data about 53,940 different diamonds including prices. We see that the data seems very clean as there as are no NAs. There are 0s in the x, y, z dimensions, however, which most likely correspond to missing values.
 
-## Task 1: Scatterplot of price vs x
+## Question 1: Scatterplot of price vs x
 
 From the dataset's help file, we learn that x is the length in millimetres.
 
@@ -43,4 +43,37 @@ ggplot(data = diamonds, aes(x, price)) +
     scale_x_continuous(limits = c(3, 11), breaks = seq(3, 11, 2))
 ```
 
+**Observations:**
+
+ - There is a correlation between price and x that looks like an exponential
+ - There are few stripes along some values of x, maybe indicating customary sizes in the diamond industry
+ - The bulk of diamonds are between 3.5 and 7.0mm and between $300 and $7500, approximately
+
+## Question 2: Correlations
+
+ * **What is the correlation between price and x?**
+ 
+```{r}
+with(diamonds, cor(x, price, method = 'pearson'))
+```
+
+ * **What is the correlation between price and y?**
+ 
+```{r}
+with(diamonds, cor(y, price, method = 'pearson'))
+```
+
+ * **What is the correlation between price and z?**
+ 
+```{r}
+with(diamonds, cor(z, price, method = 'pearson'))
+```
+
+There are strong correlations, but they might be even higher if we transformed price by applying a log transformation (because of the exponential shape of the scatter plot). Let's try it for x:
+
+```{r}
+with(diamonds, cor(x, log10(price), method = 'pearson'))
+```
+
+As predicted, we have an almost perfect linear correlation.
 
