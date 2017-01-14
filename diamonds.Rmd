@@ -116,4 +116,24 @@ with(diamonds, cor(depth, price))
 
 The correlation coefficient is very small and from the scatter plots, there is no reason to suspect some hidden, non-linear correlation.
 
+## Question 4: Price vs. Carat
+
+**Create a scatterplot of price vs carat and omit the top 1% of price and carat values.**
+
+```{r}
+dia_99pct <- subset(diamonds, 
+                    price < .99 * max(price) & carat < .99 * max(carat))
+ggplot(aes(carat, price), data = dia_99pct) +
+    geom_point(alpha = 0.02, colour = 'steelblue')
+```
+
+## Question 5: Price vs. Volume
+
+** Create a scatterplot of price vs. volume (x * y * z). This is a very rough approximation for a diamond's volume. Create a new variable for volume in the diamonds data frame. This will be useful in a later exercise. Don't make any adjustments to the plot just yet.**
+
+```{r}
+diamonds$volume <- with(diamonds, x * y * z)
+qplot(data = diamonds, volume, price)
+```
+
 
