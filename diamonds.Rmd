@@ -152,12 +152,41 @@ sum(diamonds$volume == 0)
 ** What is the correlation of price and volume? Exclude diamonds that have a volume of 0 or that are greater or equal to 800. **
 
 ```{r}
-with(subset(diamonds, volume > 0 & volume <= 800), cor(volume, price))
+dia_vol_no_outliers <- subset(diamonds, volume > 0 & volume <= 800)
+cor(dia_vol_no_outliers$volume, dia_vol_no_outliers$price)
 ```
 
 This is a very strong correlation.
-What about correlation to the exponential of volume?
+What about correlation when we take the log of price?
 ```{r}
-with(subset(diamonds, volume > 0 & volume <= 800), cor(volume, log10(price)))
+cor(dia_vol_no_outliers$volume, log10(dia_vol_no_outliers$price))
+```
+
+So the correlation is not really better.
+
+** Subset the data to exclude diamonds with a volume greater than or equal to 800. Also, exclude diamonds with a volume of 0. Adjust the transparency of the points and add a linear model to the plot. **
+
+```{r}
+
+ggplot(data = dia_vol_no_outliers, aes(volume, price)) +
+    geom_point(alpha = 0.02, colour = 'steelblue') +
+    geom_smooth(method = 'lm', formula = y ~ x, se = TRUE) +
+    coord_cartesian(xlim = c(0, 500), ylim = c(0, 20000))
+    
+```
+
+## Question 6: Mean Price vs. Clarity
+
+** Use the function dplyr package to create a new data frame containing info on diamonds by clarity. **
+
+```{r}
+require(dplyr)
+diamondsByClarity <- diamonds %>%
+    group_by(clarity) %>%
+    summarise(mean_price = mean(price),
+              median_price = median(price),
+              min_price = min(price),
+              max_price = max(price),
+              n = n())
 ```
 
