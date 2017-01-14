@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introduction
+# Introduction
 
 This mini-project is another problem set from the Data Analysis in R course,part of the Udacity Data Analyst Nanodegree. It uses the diamonds dataset that ships with the ggplot2 package.
 
@@ -24,6 +24,8 @@ summary(diamonds)
 
 This dataset contains 53,940 observations, ie. data about 53,940 different diamonds including prices. We see that the data seems very clean as there as are no NAs. There are 0s in the x, y, z dimensions, however, which most likely correspond to missing values.
 
+
+# Two Variables
 ## Question 1: Scatterplot of price vs x
 
 From the dataset's help file, we learn that x is the length in millimetres.
@@ -189,4 +191,30 @@ diamondsByClarity <- diamonds %>%
               max_price = max(price),
               n = n())
 ```
+
+## Question 7: Bar Charts of Mean Price by Clarity and Colour
+
+```{r}
+require(gridExtra)
+diamonds_by_clarity <- group_by(diamonds, clarity)
+diamonds_mp_by_clarity <- summarise(diamonds_by_clarity, 
+                                    mean_price = mean(price))
+
+diamonds_by_color <- group_by(diamonds, color)
+diamonds_mp_by_color <- summarise(diamonds_by_color, 
+                                  mean_price = mean(price))
+
+p1 <- ggplot(data = diamonds_mp_by_clarity, aes(x = clarity, y = mean_price)) +
+    geom_bar(stat = 'identity', colour = 'black', fill = 'lightsteelblue')
+p2 <- ggplot(data = diamonds_mp_by_color, aes(x = color, y = mean_price)) +
+    geom_bar(stat = 'identity', colour = 'black', fill = 'lightsteelblue')
+grid.arrange(p1, p2,ncol = 1)
+
+```
+
+** What do you notice in each of the bar charts for mean price by clarity and mean price by colour? **
+
+The diamonds dataset's documentation tells us that clarity is ordered from I1 (worst) to IF (best), and colour from J (worst) to D (best).
+Counter-intuitively, in both cases the mean price seems to decrease as quality improves. On reason might be linked to the size of the diamonds -- better quality diamonds tend to be much smaller and therefore cheaper.
+
 
