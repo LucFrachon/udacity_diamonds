@@ -129,11 +129,35 @@ ggplot(aes(carat, price), data = dia_99pct) +
 
 ## Question 5: Price vs. Volume
 
-** Create a scatterplot of price vs. volume (x * y * z). This is a very rough approximation for a diamond's volume. Create a new variable for volume in the diamonds data frame. This will be useful in a later exercise. Don't make any adjustments to the plot just yet.**
+** Create a scatterplot of price vs. volume (x * y * z). This is a very rough approximation for a diamond's volume. Create a new variable for volume in the diamonds data frame. This will be useful in a later exercise. Don't make any adjustments to the plot just yet. **
 
 ```{r}
 diamonds$volume <- with(diamonds, x * y * z)
 qplot(data = diamonds, volume, price)
 ```
 
+** What are your observations from the price vs. volume scatterplot? **
+
+ - We see a few outliers, most noticeably one that is nearly $4000mm^3$ in volume.
+ - A few diamonds have zero volume, which is consistent with the zeros that we saw in the x variable
+ - Other than that, there is a clear positive correlation between volume and price, that looks more exponential than linear.
+ Improving the plot would help make this correlation clearer.
+ 
+We can count the diamonds with 0 volume:
+```{r}
+sum(diamonds$volume == 0)
+```
+
+
+** What is the correlation of price and volume? Exclude diamonds that have a volume of 0 or that are greater or equal to 800. **
+
+```{r}
+with(subset(diamonds, volume > 0 & volume <= 800), cor(volume, price))
+```
+
+This is a very strong correlation.
+What about correlation to the exponential of volume?
+```{r}
+with(subset(diamonds, volume > 0 & volume <= 800), cor(volume, log10(price)))
+```
 
