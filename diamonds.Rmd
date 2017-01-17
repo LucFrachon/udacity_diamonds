@@ -140,7 +140,7 @@ qplot(data = diamonds, volume, price)
 
 ** What are your observations from the price vs. volume scatterplot? **
 
- - We see a few outliers, most noticeably one that is nearly $4000mm^3$ in volume.
+ - We see a few outliers, most noticeably one that is nearly 4000mm$^3$ in volume.
  - A few diamonds have zero volume, which is consistent with the zeros that we saw in the x variable
  - Other than that, there is a clear positive correlation between volume and price, that looks more exponential than linear.
  Improving the plot would help make this correlation clearer.
@@ -218,3 +218,47 @@ The diamonds dataset's documentation tells us that clarity is ordered from I1 (w
 Counter-intuitively, in both cases the mean price seems to decrease as quality improves. On reason might be linked to the size of the diamonds -- better quality diamonds tend to be much smaller and therefore cheaper.
 
 
+# Multivariate analysis
+##Price Histograms with Facet and Color
+
+** Create a histogram of diamond prices. Facet the histogram by diamond color and use cut to color the histogram bars. **
+
+```{r}
+require(ggthemes)
+theme_set(theme_igray())
+ggplot(data = diamonds, aes(x = price)) +
+    geom_histogram(aes(fill = cut), bins = 50) +
+    facet_wrap( ~ color) +
+    scale_x_log10() +
+    scale_fill_brewer(type = 'qual', palette = 'Set'
+                     )
+    
+```
+
+## Price vs. Table Colored by Cu
+
+** Create a scatterplot of diamond price vs. table and color the points by the cut of the diamond. **
+```{r}
+ggplot(data = diamonds, aes(x = table, y = price)) +
+    geom_jitter(aes(colour = cut), alpha = .1, width = .4) +
+    coord_cartesian(xlim = c(50, 70))
+```
+
+Apparently the cut of a diamond is considered better as the table is smaller in relation to the overall width of the stone.
+
+Ideal stones have table values typically ranging from 52 to 57%; premium stones from 53 to 61%.
+
+## Price vs. Volume and Diamond Clarity
+
+** Create a scatterplot of diamond price vs. volume (x * y * z) and color the points by the clarity of diamonds. Use scale on the y-axis to take the log10 of price. You should also omit the top 1% of diamond volumes from the plot.**
+
+```{r}
+ggplot(data = subset(diamonds, volume < quantile(volume, prob = .99)),
+       aes(x = volume, y = price)) +
+    geom_point(aes(colour = clarity, fill = clarity), shape = 21, alpha = .3) +
+    scale_y_log10() +
+    scale_color_brewer(type = 'qual', palette = 'Pastel1')
+```
+
+For a same value of volume, the better the clarity, the higher the price. The difference
+can be considerable, especially for diamonds with a volume over 150mm$^3$.
