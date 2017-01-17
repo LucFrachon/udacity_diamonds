@@ -262,3 +262,25 @@ ggplot(data = subset(diamonds, volume < quantile(volume, prob = .99)),
 
 For a same value of volume, the better the clarity, the higher the price. The difference
 can be considerable, especially for diamonds with a volume over 150mm$^3$.
+
+## Price/Carat Binned, Faceted & Colored
+
+Create a scatter plot of the price/carat ratio of diamonds. The variable x should be assigned to cut. The points should be colored by diamond color, and the plot should be faceted by clarity.
+
+```{r}
+ggplot(data = diamonds,
+       aes(x = cut, y = price / carat)) +
+    scale_color_brewer(type ='qual', palette = 'Set3') +
+    geom_jitter(aes(colour = color), alpha = .3, height = 0) +
+    facet_wrap( ~ clarity) +
+    ggtitle("Price per Carat by Diamond Clarity, then Cut")
+```
+
+The plot provides the following information:
+
+ - There is a general progression of the highest prices as clarity improves, but this is not obvious for either minimum or mean prices
+ - The progression of maximum prices with cut quality is less obvious; it is apparent in some clarity categories but this might also be an effect of the higher count of the of high-quality cuts.
+ - Again, maximum prices seem to be somewhat associated to color, but most color grades can be found in the lower price per carat bands as well.
+ 
+Overall, the information is not very conclusive and more sophisticated methods are probably required to predict prices.
+
